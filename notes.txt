@@ -1,0 +1,23 @@
+Dont forget to login to gcloud cli under the reana project. Will need to use credentials json manually once deployed. 
+
+For dev
+Start uvicorn servers with main.py
+
+(reana) (base) ➜  reanna_router python main.py
+INFO:     Will watch for changes in these directories: ['/Users/breydentaylor/reanna_router']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [67109] using StatReload
+INFO:     Started server process [67111]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:root:Google authentication failed. Refreshing credentials... # log in via cli gcloud auth --reana-{projectNumberThing}
+INFO:root:Sending request to Google Route Optimization API...
+
+Run python test.py to simulate agentic tool call incoming. 
+
+NOTE: Need to move html form generation piece out of test.py and into its own file, with __init__.py nearby as sibling, and import appropriately from main.py. Move route optimization logic into its own file as well and import properly from main.py. Eventually expand tool call extended logic to merge mls data and tool call address data, set states, and serve endpoints for status updates and polling. 
+
+Make custom assistable tools that poll and patch status for each property confirmation/where were at in the whole tour sequence, etc. Leverage opportunity pipelines and custom objects in ghl to faciliate a pseudo cache and a scheduled flush during off hours (to supabase or mongo probably - maybe cassandra)
+
+Likely to deploy this mvp via huggingface or gcloudfunctions - kubernetes later (railway or GKE)
+Need to switch from uvicorn solo to gunicorn combo for resouce allocation and maximizing CPU usage. 
