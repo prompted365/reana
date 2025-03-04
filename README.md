@@ -145,3 +145,12 @@ python main.py
 - For production, consider deploying to Google Cloud Functions, Google Kubernetes Engine, or Railway
 - Switch from uvicorn to gunicorn for better resource allocation in production
 - Ensure proper authentication with Google Cloud services
+
+## Benchmark
+
+Run with
+
+```bash
+chmod +x benchmark.sh
+./benchmark.sh
+```

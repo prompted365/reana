@@ -1,0 +1,12 @@
+Running benchmark...
+Run #1
+Execution Time: 324.151 ms
+Run #2
+Execution Time: 323.647 ms
+Run #3
+Execution Time: 301.931 ms
+Run #4
+Execution Time: 309.006 ms
+Run #5
+Execution Time: 307.636 ms
+Benchmark complete. Results saved in speed_comparison.log

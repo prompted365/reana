@@ -8,7 +8,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 echo -e "${GREEN}REanna Router - Google Cloud Credentials Setup${NC}"
-echo "This script will help you set up Google Cloud credentials for the application."
+echo "This script will help set up Google Cloud credentials for the application."
 echo
 
 # Check if gcloud is installed
