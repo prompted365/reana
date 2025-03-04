@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  reanna-router:
+    build: .
+    container_name: reanna-router
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./tours:/app/tours
+      - ${GOOGLE_APPLICATION_CREDENTIALS:-./google-credentials.json}:/app/google-credentials.json
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GCP_PROJECT_ID=${GCP_PROJECT_ID}
+      - GHL_LOCATION_ID=${GHL_LOCATION_ID}
+      - GHL_TOKEN=${GHL_TOKEN}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/google-credentials.json
+    restart: unless-stopped
