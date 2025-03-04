@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>the journey home - a hallmark special by REana</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--primary-color);
+            background-color: #f8f9fa;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            position: relative;
+        }
+        
+        .logo-placeholder {
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .tour-summary {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-top: -2rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .summary-item {
+            text-align: center;
+            padding: 1rem;
+            border-right: 1px solid #eee;
+        }
+        
+        .summary-item:last-child {
+            border-right: none;
+        }
+        
+        .summary-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        .summary-label {
+            font-size: 0.9rem;
+            color: #777;
+            text-transform: uppercase;
+        }
+        
+        .map-container {
+            height: 400px;
+            background-color: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .map-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #777;
+        }
+        
+        .timeline {
+            position: relative;
+            margin: 3rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background-color: var(--secondary-color);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-content {
+            position: relative;
+            width: 45%;
+            padding: 2rem;
+            background-color: #f0f0f0;
+            border-radius: 15px;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+.timeline-content:hover {
+    transform: translateY(-5px) rotateX(5deg) rotateY(5deg);
+    background: rgba(255, 255, 255, 0.9);
+}
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: auto;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            top: 1.5rem;
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            background-color: var(--accent-color);
+            border: 3px solid white;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            transition: background-color 0.3s ease;
+        }
+
+        .timeline-dot:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .timeline-time {
+            position: absolute;
+            top: 1.5rem;
+            width: 120px;
+            text-align: center;
+            color: var(--dark-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .timeline-time:hover {
+            color: var(--accent-color);
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-time {
+            right: 55%;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-time {
+            left: 55%;
+        }
+        
+        .property-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .property-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            position: relative;
+        }
+        
+        .property-number {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .property-body {
+            padding: 1.5rem;
+        }
+        
+        .property-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        
+        .property-detail i {
+            color: var(--secondary-color);
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .video-container {
+            background-color: #eee;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            margin-top: 1rem;
+            border-radius: 5px;
+        }
+        
+        .drive-info {
+            background-color: var(--light-color);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+        
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media print {
+            .map-container {
+                break-inside: avoid;
+            }
+            
+            .property-card {
+                break-inside: avoid;
+            }
+            
+            .timeline::before {
+                display: none;
+            }
+            
+            .timeline-content {
+                width: 100%;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+            
+            .timeline-dot, .timeline-time {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+                margin-right: 0 !important;
+            }
+            
+            .timeline-dot {
+                left: 30px;
+            }
+            
+            .timeline-time {
+                left: 0 !important;
+                right: auto !important;
+                width: 60px;
+                text-align: right;
+            }
+            
+            .summary-item {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .summary-item:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-2">
+                    <div class="logo-placeholder">
+                        <i class="fas fa-home fa-lg"></i>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-user"></i>
+                        <span>Agent: Mark Witte</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-phone"></i>
+                        <span>Contact: sms</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Status: confirmed</span>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <h1>|reana| home hunting schedule</h1>
+                    <p class="mb-0">Monday, March 3, 2025</p>
+                    <p class="mb-0">Agent: Mark Witte</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Tour Summary Section -->
+    <section class="container">
+        <div class="tour-summary">
+            <div class="row">
+                <div class="col-md-3 summary-item">
+                    <div class="summary-value">7</div>
+                    <div class="summary-label">Properties</div>
+                </div>
+                <div class="col-md-3 summary-item">
+                    <div class="summary-value">120</div>
+                    <div class="summary-label">Total Drive Minutes</div>
+                </div>
+                <div class="col-md-3 summary-item">
+                    <div class="summary-value">25</div>
+                    <div class="summary-label">Total Drive KM</div>
+                </div>
+                <div class="col-md-3 summary-item">
+                    <div class="summary-value">9:00 - 17:00</div>
+                    <div class="summary-label">Tour Hours</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Map Section -->
+    <section class="container mt-5">
+        <h2 class="mb-4">Tour Route</h2>
+        <div class="map-container" id="map">
+            <div class="map-placeholder">
+                <i class="fas fa-map-marked-alt fa-3x mb-3"></i>
+                <h4>Interactive Google Map</h4>
+                <p>Showing the complete tour route with all property locations</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Timeline Section -->
+    <section class="container mt-5">
+        <h2 class="mb-4">Tour Timeline</h2>
+        <div class="timeline">
+            <!-- Starting Point -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">9:00 AM</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-home me-2"></i>Starting Point</h4>
+                    <p>10 Columbus Circle, New York, NY 10019</p>
+                    <div class="badge bg-primary">Tour Start</div>
+                </div>
+            </div>
+            
+            <!-- Property 1 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">9:30 AM</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-building me-2"></i>Empire State Building</h4>
+                    <p>350 5th Ave, New York, NY 10118</p>
+                    <div class="d-flex justify-content-between">
+                        <div class="badge bg-info">30 min visit</div>
+                        <div class="badge bg-secondary">15 min drive</div>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-user"></i>
+                        <span>Agent: Agent B</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-phone"></i>
+                        <span>Contact: call</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Status: pending</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Property 2 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">10:30 AM</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-building me-2"></i>Chrysler Building</h4>
+                    <p>405 Lexington Ave, New York, NY 10174</p>
+                    <div class="d-flex justify-content-between">
+                        <div class="badge bg-info">30 min visit</div>
+                        <div class="badge bg-secondary">10 min drive</div>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-user"></i>
+                        <span>Agent: Agent C</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-phone"></i>
+                        <span>Contact: showingTime</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Status: confirmed</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Property 3 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">11:30 AM</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-building me-2"></i>Macy's Herald Square</h4>
+                    <p>20 W 34th St, New York, NY 10001</p>
+                    <div class="d-flex justify-content-between">
+                        <div class="badge bg-info">30 min visit</div>
+                        <div class="badge bg-secondary">15 min drive</div>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-user"></i>
+                        <span>Agent: Agent D</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-phone"></i>
+                        <span>Contact: go-direct</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Status: confirmed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 4 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">12:30 PM</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-building me-2"></i>30 Rock</h4>
+                    <p>30 Rockefeller Plaza, New York, NY 10112</p>
+                    <div class="d-flex justify-content-between">
+                        <div class="badge bg-info">30 min visit</div>
+                        <div class="badge bg-secondary">10 min drive</div>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-user"></i>
+                        <span>Agent: Agent E</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-phone"></i>
+                        <span>Contact: sms</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Status: pending</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 5 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">1:30 PM</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-building me-2"></i>One World Trade</h4>
+                    <p>1 World Trade Center, New York, NY 10007</p>
+                    <div class="d-flex justify-content-between">
+                        <div class="badge bg-info">30 min visit</div>
+                        <div class="badge bg-secondary">15 min drive</div>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-user"></i>
+                        <span>Agent: Agent F</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-phone"></i>
+                        <span>Contact: call</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Status: confirmed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 6 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">2:30 PM</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-building me-2"></i>NYSE</h4>
+                    <p>11 Wall St, New York, NY 10005</p>
+                    <div class="d-flex justify-content-between">
+                        <div class="badge bg-info">30 min visit</div>
+                        <div class="badge bg-secondary">10 min drive</div>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-user"></i>
+                        <span>Agent: Agent G</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-phone"></i>
+                        <span>Contact: showingTime</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Status: confirmed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 7 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">3:30 PM</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-building me-2"></i>The Plaza Hotel</h4>
+                    <p>768 5th Ave, New York, NY 10019</p>
+                    <div class="d-flex justify-content-between">
+                        <div class="badge bg-info">30 min visit</div>
+                        <div class="badge bg-secondary">15 min drive</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ending Point -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">5:00 PM</div>
+                <div class="timeline-content">
+                    <h4><i class="fas fa-home me-2"></i>Ending Point</h4>
+                    <p>10 Columbus Circle, New York, NY 10019</p>
+                    <div class="badge bg-primary">Tour End</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Property Cards Section -->
+    <section class="container mt-5">
+        <h2 class="mb-4">Property Details</h2>
+        <div class="row">
+            <!-- Property 1 -->
+            <div class="col-lg-6 mb-4">
+                <div class="property-card">
+                    <div class="property-header">
+                        <div class="property-number">1</div>
+                        <h3>Empire State Building</h3>
+                        <p class="mb-0">350 5th Ave, New York, NY 10118</p>
+                    </div>
+                    <div class="property-body">
+                        <div class="property-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>Arrival: 9:30 AM | Duration: 30 minutes</span>
+                        </div>
+                        <div class="property-detail">
+                            <i class="fas fa-user"></i>
+                            <span>Agent: Agent A</span>
+                        </div>
+                        <div class="property-detail">
+                            <i class="fas fa-phone"></i>
+                            <span>Contact: sms</span>
+                        </div>
+                        <div class="property-detail">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Status: confirmed</span>
+                        </div>
+                        <div class="property-detail">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>Constraint: flexible</span>
+                        </div>
+                        <div class="property-detail">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>1,800 sq ft</span>
+                        </div>
+                        <div class="property-detail">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Available: 9:30 AM - 11:00 AM</span>
+                        </div>
+                        <div class="video-container">
+                            <div class="text-center">
+                                <i class="fas fa-video fa-2x mb-2"></i>
+                                <h5>Property Video</h5>
+                                <p class="mb-0">Click to play video tour</p>
+                            </div>
+                        </div>
+                        <div class="drive-info mt-3">
+                            <h5><i class="fas fa-car me-2"></i>Travel Information</h5>
+                            <p class="mb-1">From: Starting Point (10 Columbus Circle)</p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-stopwatch"></i>
+                                        <span>15 min drive</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-road"></i>
+                                        <span>3.5 km</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Property 2 -->
+            <div class="col-lg-6 mb-4">
+                <div class="property-card">
+                    <div class="property-header">
+                        <div class="property-number">2</div>
+                        <h3>Chrysler Building</h3>
+                        <p class="mb-0">405 Lexington Ave, New York, NY 10174</p>
+                    </div>
+<div class="property-body">
+    <div class="property-detail">
+        <i class="fas fa-clock"></i>
+        <span>Arrival: 10:30 AM | Duration: 30 minutes</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-user"></i>
+        <span>Agent: Agent A</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-phone"></i>
+        <span>Contact: sms</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-check-circle"></i>
+        <span>Status: confirmed</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Constraint: flexible</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-ruler-combined"></i>
+        <span>1,500 sq ft</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Available: 10:00 AM - 12:00 PM</span>
+    </div>
+                        
+                        <div class="video-container">
+                            <div class="text-center">
+                                <i class="fas fa-video fa-2x mb-2"></i>
+                                <h5>Property Video</h5>
+                                <p class="mb-0">Click to play video tour</p>
+                            </div>
+                        </div>
+                        
+                        <div class="drive-info mt-3">
+                            <h5><i class="fas fa-car me-2"></i>Travel Information</h5>
+                            <p class="mb-1">From: Empire State Building</p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-stopwatch"></i>
+                                        <span>10 min drive</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-road"></i>
+                                        <span>2.1 km</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Property 3 -->
+            <div class="col-lg-6 mb-4">
+                <div class="property-card">
+                    <div class="property-header">
+                        <div class="property-number">3</div>
+                        <h3>Macy's Herald Square</h3>
+                        <p class="mb-0">20 W 34th St, New York, NY 10001</p>
+                    </div>
+<div class="property-body">
+    <div class="property-detail">
+        <i class="fas fa-clock"></i>
+        <span>Arrival: 11:30 AM | Duration: 30 minutes</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-user"></i>
+        <span>Agent: Agent A</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-phone"></i>
+        <span>Contact: sms</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-check-circle"></i>
+        <span>Status: confirmed</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Constraint: flexible</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-ruler-combined"></i>
+        <span>2,200 sq ft</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Available: 11:00 AM - 1:00 PM</span>
+    </div>
+                        
+                        <div class="video-container">
+                            <div class="text-center">
+                                <i class="fas fa-video fa-2x mb-2"></i>
+                                <h5>Property Video</h5>
+                                <p class="mb-0">Click to play video tour</p>
+                            </div>
+                        </div>
+                        
+                        <div class="drive-info mt-3">
+                            <h5><i class="fas fa-car me-2"></i>Travel Information</h5>
+                            <p class="mb-1">From: Chrysler Building</p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-stopwatch"></i>
+                                        <span>15 min drive</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-road"></i>
+                                        <span>3.0 km</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 4 -->
+            <div class="col-lg-6 mb-4">
+                <div class="property-card">
+                    <div class="property-header">
+                        <div class="property-number">4</div>
+                        <h3>30 Rock</h3>
+                        <p class="mb-0">30 Rockefeller Plaza, New York, NY 10112</p>
+                    </div>
+<div class="property-body">
+    <div class="property-detail">
+        <i class="fas fa-clock"></i>
+        <span>Arrival: 12:30 PM | Duration: 30 minutes</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-user"></i>
+        <span>Agent: Agent A</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-phone"></i>
+        <span>Contact: sms</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-check-circle"></i>
+        <span>Status: confirmed</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Constraint: flexible</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-ruler-combined"></i>
+        <span>1,700 sq ft</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Available: 12:00 PM - 2:00 PM</span>
+    </div>
+                        
+                        <div class="video-container">
+                            <div class="text-center">
+                                <i class="fas fa-video fa-2x mb-2"></i>
+                                <h5>Property Video</h5>
+                                <p class="mb-0">Click to play video tour</p>
+                            </div>
+                        </div>
+                        
+                        <div class="drive-info mt-3">
+                            <h5><i class="fas fa-car me-2"></i>Travel Information</h5>
+                            <p class="mb-1">From: Macy's Herald Square</p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-stopwatch"></i>
+                                        <span>10 min drive</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-road"></i>
+                                        <span>2.5 km</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 5 -->
+            <div class="col-lg-6 mb-4">
+                <div class="property-card">
+                    <div class="property-header">
+                        <div class="property-number">5</div>
+                        <h3>One World Trade</h3>
+                        <p class="mb-0">1 World Trade Center, New York, NY 10007</p>
+                    </div>
+<div class="property-body">
+    <div class="property-detail">
+        <i class="fas fa-clock"></i>
+        <span>Arrival: 1:30 PM | Duration: 30 minutes</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-user"></i>
+        <span>Agent: Agent A</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-phone"></i>
+        <span>Contact: sms</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-check-circle"></i>
+        <span>Status: confirmed</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Constraint: flexible</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-ruler-combined"></i>
+        <span>2,000 sq ft</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Available: 1:00 PM - 3:00 PM</span>
+    </div>
+                        
+                        <div class="video-container">
+                            <div class="text-center">
+                                <i class="fas fa-video fa-2x mb-2"></i>
+                                <h5>Property Video</h5>
+                                <p class="mb-0">Click to play video tour</p>
+                            </div>
+                        </div>
+                        
+                        <div class="drive-info mt-3">
+                            <h5><i class="fas fa-car me-2"></i>Travel Information</h5>
+                            <p class="mb-1">From: 30 Rock</p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-stopwatch"></i>
+                                        <span>15 min drive</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-road"></i>
+                                        <span>4.0 km</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 6 -->
+            <div class="col-lg-6 mb-4">
+                <div class="property-card">
+                    <div class="property-header">
+                        <div class="property-number">6</div>
+                        <h3>NYSE</h3>
+                        <p class="mb-0">11 Wall St, New York, NY 10005</p>
+                    </div>
+<div class="property-body">
+    <div class="property-detail">
+        <i class="fas fa-clock"></i>
+        <span>Arrival: 2:30 PM | Duration: 30 minutes</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-user"></i>
+        <span>Agent: Agent A</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-phone"></i>
+        <span>Contact: sms</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-check-circle"></i>
+        <span>Status: confirmed</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Constraint: flexible</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-ruler-combined"></i>
+        <span>1,600 sq ft</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Available: 2:00 PM - 4:00 PM</span>
+    </div>
+                        
+                        <div class="video-container">
+                            <div class="text-center">
+                                <i class="fas fa-video fa-2x mb-2"></i>
+                                <h5>Property Video</h5>
+                                <p class="mb-0">Click to play video tour</p>
+                            </div>
+                        </div>
+                        
+                        <div class="drive-info mt-3">
+                            <h5><i class="fas fa-car me-2"></i>Travel Information</h5>
+                            <p class="mb-1">From: One World Trade</p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-stopwatch"></i>
+                                        <span>10 min drive</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-road"></i>
+                                        <span>2.8 km</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property 7 -->
+            <div class="col-lg-6 mb-4">
+                <div class="property-card">
+                    <div class="property-header">
+                        <div class="property-number">7</div>
+                        <h3>The Plaza Hotel</h3>
+                        <p class="mb-0">768 5th Ave, New York, NY 10019</p>
+                    </div>
+<div class="property-body">
+    <div class="property-detail">
+        <i class="fas fa-clock"></i>
+        <span>Arrival: 3:30 PM | Duration: 30 minutes</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-user"></i>
+        <span>Agent: Agent A</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-phone"></i>
+        <span>Contact: sms</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-check-circle"></i>
+        <span>Status: confirmed</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Constraint: flexible</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-ruler-combined"></i>
+        <span>1,900 sq ft</span>
+    </div>
+    <div class="property-detail">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Available: 3:00 PM - 5:00 PM</span>
+    </div>
+                        
+                        <div class="video-container">
+                            <div class="text-center">
+                                <i class="fas fa-video fa-2x mb-2"></i>
+                                <h5>Property Video</h5>
+                                <p class="mb-0">Click to play video tour</p>
+                            </div>
+                        </div>
+                        
+                        <div class="drive-info mt-3">
+                            <h5><i class="fas fa-car me-2"></i>Travel Information</h5>
+                            <p class="mb-1">From: NYSE</p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-stopwatch"></i>
+                                        <span>15 min drive</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="property-detail">
+                                        <i class="fas fa-road"></i>
+                                        <span>3.2 km</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Contact Information</h4>
+                    <p><i class="fas fa-user me-2"></i>Your Name</p>
+                    <p><i class="fas fa-phone me-2"></i>(123) 456-7890</p>
+                    <p><i class="fas fa-envelope me-2"></i>your.email@example.com</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-1">Generated on March 3, 2025</p>
+                    <button class="btn btn-outline-light" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i>Print Schedule
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // This would be replaced with actual Google Maps API integration
+        function initMap() {
+            // Map initialization code would go here
+            console.log("Map would be initialized here with Google Maps API");
+        }
+        
+        // Function to load property videos
+        function setupVideoPlayers() {
+            const videoContainers = document.querySelectorAll('.video-container');
+            videoContainers.forEach(container => {
+                container.addEventListener('click', function() {
+                    // This would be replaced with actual video player initialization
+                    alert("Video player would be initialized here");
+                });
+            });
+        }
+        
+        // Initialize when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // initMap(); // Would be called when Google Maps API is loaded
+            setupVideoPlayers();
+        });
+    </script>
+    
+    <!-- This script tag would be uncommented and API key added when implementing Google Maps -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script> -->
+</body>
+</html>
