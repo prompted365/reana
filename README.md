@@ -1,13 +1,27 @@
 # REanna Router
 
-A FastAPI application that optimizes real estate tour schedules using Google's Route Optimization API.
+A FastAPI application that optimizes real estate tour schedules using Google's Route Optimization API, with enhanced task management and feedback collection capabilities.
 
 ## Features
 
 - Optimizes property viewing schedules for real estate agents
 - Uses Google Maps APIs for geocoding and route optimization
-- Generates HTML schedules with detailed tour information
+- Maps shipments to discrete tasks for flexible tour management
+- Collects and processes buyer feedback in real-time
+- Notifies listing agents about property feedback
+- Maintains a tour journal with chronological visit and feedback data
 - Supports different agent preferences (optimize, furthest, closest)
+
+## Architecture
+
+REanna Router uses a task-based architecture that maps Google Cloud Fleet Routing "shipments" to discrete tasks in a property tour workflow:
+
+- **Tours**: Represent a complete property viewing schedule for an agent
+- **Property Visits**: Individual stops at properties within a tour
+- **Tasks**: Discrete activities associated with property visits (touring, feedback collection, etc.)
+- **Feedback**: Buyer feedback collected via SMS, voice, or other methods
+
+This architecture allows for flexible scheduling, real-time updates, and parallel AI-driven feedback processing.
 
 ## Prerequisites
 
@@ -17,6 +31,7 @@ A FastAPI application that optimizes real estate tour schedules using Google's R
   - Routes API
   - Route Optimization API
 - Google Cloud credentials
+- SQLite (for development) or another database (for production)
 
 ## Environment Variables
 
@@ -89,34 +104,52 @@ The API will be available at <http://localhost:8000>
 
 ## API Endpoints
 
-### POST /optimize
+REanna Router provides a comprehensive set of API endpoints for managing tours, property visits, tasks, and feedback:
 
-Optimizes a real estate tour schedule.
+### Tours
 
-Example request:
+- `POST /tours/`: Create a new tour and optimize the schedule
+- `GET /tours/{tour_id}`: Get details of a specific tour
+- `GET /tours/`: Get all tours, optionally filtered by agent ID or active status
+- `PUT /tours/{tour_id}/status`: Update the status of a tour
+- `GET /tours/{tour_id}/journal`: Get the journal entries for a tour
 
-```json
-{
-  "agent_home": "10 Columbus Circle, New York, NY 10019",
-  "tour_start_time": "2025-03-03T09:00:00Z",
-  "tour_end_time": "2025-03-03T17:00:00Z",
-  "properties": [
-    {
-      "address": "350 5th Ave, New York, NY 10118",
-      "available_from": "09:30",
-      "available_to": "11:00",
-      "square_footage": 1800,
-      "video_url": "https://example.com/videos/empire-state.mp4",
-      "sellside_agent_name": "Agent A",
-      "contact_method_preferred": "sms",
-      "confirmation_status": "confirmed",
-      "constraint_indicator": "flexible"
-    },
-    // Additional properties...
-  ],
-  "start_preference": "optimize"
-}
-```
+### Property Visits
+
+- `GET /property-visits/`: Get all property visits for a tour
+- `GET /property-visits/{visit_id}`: Get details of a specific property visit
+- `POST /property-visits/`: Create a new property visit
+- `PUT /property-visits/{visit_id}/arrival`: Record the actual arrival time at a property
+- `PUT /property-visits/{visit_id}/departure`: Record the actual departure time from a property
+- `PUT /property-visits/{visit_id}/status`: Update the status of a property visit
+- `GET /property-visits/tour/{tour_id}/next`: Get the next scheduled property visit for a tour
+- `GET /property-visits/tour/{tour_id}/current`: Get the current property visit for a tour
+
+### Tasks
+
+- `GET /tasks/`: Get tasks, optionally filtered by visit ID, task type, or pending status
+- `GET /tasks/{task_id}`: Get details of a specific task
+- `PUT /tasks/{task_id}/status`: Update the status of a task
+- `PUT /tasks/{task_id}`: Update details of a task
+- `POST /tasks/property-tour`: Create a property tour task
+- `POST /tasks/feedback`: Create a feedback collection task
+
+### Feedback
+
+- `GET /feedback/`: Get feedback entries, optionally filtered by task ID or unsent status
+- `GET /feedback/{feedback_id}`: Get details of a specific feedback entry
+- `POST /feedback/sms`: Submit feedback via SMS
+- `POST /feedback/voice`: Submit feedback via voice transcription
+- `PUT /feedback/{feedback_id}/process`: Process a feedback entry using AI
+- `PUT /feedback/{feedback_id}/notify`: Send a notification about feedback to the listing agent
+- `PUT /feedback/{feedback_id}`: Update a feedback entry
+- `POST /feedback/process-unsent`: Process all unsent feedback and send notifications
+
+### Legacy Endpoint
+
+For backward compatibility with the original API:
+
+- `POST /optimize`: Legacy endpoint that accepts the original request format
 
 ## Testing
 
@@ -140,17 +173,19 @@ pip install -r requirements.txt
 python main.py
 ```
 
+## Database
+
+REanna Router uses SQLite for development, but can be configured to use other databases for production. The database schema includes tables for:
+
+- Tours
+- Property Visits
+- Tasks
+- Feedback
+
 ## Deployment Notes
 
 - For production, consider deploying to Google Cloud Functions, Google Kubernetes Engine, or Railway
 - Switch from uvicorn to gunicorn for better resource allocation in production
+- Replace SQLite with a more robust database like PostgreSQL or MongoDB for production
 - Ensure proper authentication with Google Cloud services
-
-## Benchmark
-
-Run with
-
-```bash
-chmod +x benchmark.sh
-./benchmark.sh
-```
+- Implement real SMS and voice integration for feedback collection
