@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="overview-section" class="dashboard-section active">
+    <h2>System Overview</h2>
+    <div class="overview-grid">
+        <div class="card">
+            <div class="card-header">
+                <h3>API Calls</h3>
+            </div>
+            <div class="card-body">
+                <div class="metric-large">
+                    <span id="total-api-calls">-</span>
+                </div>
+                <div class="metric-subtitle">Total Requests</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3>Error Rate</h3>
+            </div>
+            <div class="card-body">
+                <div class="metric-large" id="error-rate-container">
+                    <span id="error-rate">-</span><span>%</span>
+                </div>
+                <div class="metric-subtitle">
+                    <span id="total-errors">-</span> errors / <span id="total-retries">-</span> retries
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3>Circuit Breakers</h3>
+            </div>
+            <div class="card-body">
+                <div class="circuit-status">
+                    <span class="status-label">Open:</span>
+                    <span id="open-circuits" class="status-count">-</span>
+                </div>
+                <div class="circuit-status">
+                    <span class="status-label">Half-Open:</span>
+                    <span id="half-open-circuits" class="status-count">-</span>
+                </div>
+                <div class="circuit-status">
+                    <span class="status-label">Closed:</span>
+                    <span id="closed-circuits" class="status-count">-</span>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3>Rate Limits</h3>
+            </div>
+            <div class="card-body">
+                <div class="rate-limit-status">
+                    <span class="status-label">Status:</span>
+                    <span id="rate-limit-status" class="status-indicator">-</span>
+                </div>
+                <div class="rate-limit-percent">
+                    <span class="status-label">Remaining:</span>
+                    <span id="lowest-remaining-percent">-</span><span>%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Failed Operations</h3>
+        </div>
+        <div class="card-body">
+            <div class="metric-large" id="failed-ops-container">
+                <span id="recent-failures">-</span>
+            </div>
+            <div class="metric-subtitle">
+                Recent Failures (Last 24h)
+            </div>
+        </div>
+    </div>
+    <div class="chart-container">
+        <div class="chart-card">
+            <h3>Response Time (Last 24h)</h3>
+            <canvas id="response-time-chart"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>API Calls by Endpoint</h3>
+            <canvas id="api-calls-chart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div id="api-stats-section" class="dashboard-section">
+    <h2>API Statistics</h2>
+    <div class="filter-controls">
+        <div class="search-box">
+            <input type="text" id="endpoint-search" placeholder="Search endpoints...">
+            <button id="search-button"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="sort-controls">
+            <label for="sort-by">Sort by:</label>
+            <select id="sort-by">
+                <option value="calls">Total Calls</option>
+                <option value="errors">Error Count</option>
+                <option value="response-time">Response Time</option>
+            </select>
+        </div>
+    </div>
+    <div class="table-container">
+        <table id="api-stats-table" class="data-table">
+            <thead>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Total Calls</th>
+                    <th>Success</th>
+                    <th>Errors</th>
+                    <th>Error Rate</th>
+                    <th>Avg Response</th>
+                    <th>95th %</th>
+                    <th>Retries</th>
+                    <th>Last Called</th>
+                </tr>
+            </thead>
+            <tbody id="api-stats-body">
+                <!-- API stats will be populated here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="circuit-breakers-section" class="dashboard-section">
+    <h2>Circuit Breakers</h2>
+    <div class="circuit-breakers-grid" id="circuit-breakers-grid">
+        <!-- Circuit breaker cards will be populated here -->
+    </div>
+</div>
+
+<div id="rate-limits-section" class="dashboard-section">
+    <h2>Rate Limits</h2>
+    <div class="rate-limits-grid" id="rate-limits-grid">
+        <!-- Rate limit cards will be populated here -->
+    </div>
+</div>
+
+<div id="failed-operations-section" class="dashboard-section">
+    <h2>Failed Operations</h2>
+    <div class="failed-ops-controls">
+        <div class="filter-dropdown">
+            <label for="failed-ops-filter">Filter by:</label>
+            <select id="failed-ops-filter">
+                <option value="all">All Operations</option>
+                <option value="tour-sync">Tour Sync</option>
+                <option value="feedback-sync">Feedback Sync</option>
+            </select>
+        </div>
+        <button id="retry-all-button" class="action-button">
+            <i class="fas fa-sync"></i> Retry All Failed
+        </button>
+    </div>
+    <div class="table-container">
+        <table id="failed-ops-table" class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Operation</th>
+                    <th>Status</th>
+                    <th>Last Attempt</th>
+                    <th>Retry Count</th>
+                    <th>Error</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="failed-ops-body">
+                <!-- Failed operations will be populated here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="alerts-section" class="dashboard-section">
+    <h2>Alerts & Notifications</h2>
+    
+    <!-- Alerts Table -->
+    <div class="section-panel">
+        <h3>Recent Alerts</h3>
+        <div class="table-container">
+            <table id="alerts-table" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Level</th>
+                        <th>Type</th>
+                        <th>Entity</th>
+                        <th>Message</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="alerts-table-body">
+                    <!-- Alerts will be populated here -->
+                </tbody>
+            </table>
+        </div>
+        <div id="alerts-container" class="mt-3">
+            <!-- Alert records will appear here -->
+        </div>
+    </div>
+    
+    <!-- Alert Configurations -->
+    <div class="section-panel mt-4">
+        <h3>Alert Configurations</h3>
+        <div id="alert-configs-container" class="config-grid">
+            <!-- Alert config cards will be populated here -->
+        </div>
+    </div>
+    
+    <!-- Test Alert Form -->
+    <div class="section-panel mt-4">
+        <h3>Test Alert Notifications</h3>
+        <div class="test-alert-form">
+            <div class="form-group">
+                <label for="test-alert-type">Alert Type:</label>
+                <select id="test-alert-type" class="form-control">
+                    <option value="REPEATED_SYNC_FAILURE">Repeated Sync Failure</option>
+                    <option value="CIRCUIT_BREAKER_OPEN">Circuit Breaker Open</option>
+                    <option value="RATE_LIMIT_CRITICAL">Rate Limit Critical</option>
+                    <option value="AUTH_FAILURE">Auth Failure</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="test-alert-recipient">Recipient:</label>
+                <input type="text" id="test-alert-recipient" class="form-control" 
+                       placeholder="Email or webhook URL" value="test@example.com">
+            </div>
+            <button id="test-alert-button" class="btn btn-primary">
+                Send Test Alert
+            </button>
+            <div class="mt-3 small text-muted">
+                Note: Email delivery requires properly configured SMTP settings.
+                Webhook delivery requires a properly configured endpoint.
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Add any page-specific scripts here
+</script>
+{% endblock %}

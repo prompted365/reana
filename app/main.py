@@ -1,13 +1,17 @@
 import os
 import logging
+from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.api.routes import (
     tours_router,
     tasks_router,
     feedback_router,
-    property_visits_router
+    property_visits_router,
+    monitoring_router,
+    dashboard_router
 )
 
 # Configure logging
@@ -38,6 +42,12 @@ app.include_router(tours_router)
 app.include_router(tasks_router)
 app.include_router(feedback_router)
 app.include_router(property_visits_router)
+app.include_router(monitoring_router)
+app.include_router(dashboard_router)
+
+# Mount static files directory
+static_dir = Path(__file__).resolve().parent / "static"
+app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 
 @app.get("/")
 async def root():
@@ -52,7 +62,9 @@ async def root():
             "/tours",
             "/tasks",
             "/feedback",
-            "/property-visits"
+            "/property-visits",
+            "/api/monitoring",
+            "/dashboard"
         ]
     }
 

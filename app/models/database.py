@@ -4,6 +4,7 @@ from contextlib import contextmanager
 import json
 import uuid
 
+from fastapi import Depends
 from app.utils.time_utils import current_timestamp
 
 # Database setup
@@ -102,6 +103,15 @@ def init_db():
         ''')
         
         conn.commit()
+
+# FastAPI dependency for database access
+def get_db():
+    """
+    Get database connection as a FastAPI dependency.
+    This function can be used with FastAPI's Depends() to inject a database connection.
+    """
+    with get_db_connection() as conn:
+        yield conn
 
 def generate_id():
     """Generate a unique ID for database records."""

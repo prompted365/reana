@@ -21,3 +21,19 @@ Make custom assistable tools that poll and patch status for each property confir
 
 Likely to deploy this mvp via huggingface or gcloudfunctions - kubernetes later (railway or GKE)
 Need to switch from uvicorn solo to gunicorn combo for resouce allocation and maximizing CPU usage. 
+
+
+
+## Upstash Redis:
+
+Currently on $.2 per 100k/writes with primary region of US-East (matching railway and supabase) with 2 additional regions supported for read access proximity (California, Oregon)
+
+Prod Pack
+
+Recommended for production use.
+
+Uptime SLA
+RBAC
+SOC-2
+Prometheus and Datadog
+

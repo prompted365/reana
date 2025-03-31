@@ -4,12 +4,20 @@ import datetime
 import json
 
 from app.models.database import get_db_connection, generate_id, current_timestamp
+from enum import Enum
+
+
+class TourStatus(str, Enum):
+    SCHEDULED = "scheduled"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+    CANCELLED = "cancelled"
 
 class TourBase(BaseModel):
     agent_id: str
     start_time: str
     end_time: str
-    status: str = "scheduled"  # scheduled, in_progress, completed, cancelled
+    status: TourStatus = TourStatus.SCHEDULED
 
 class TourCreate(TourBase):
     pass
@@ -20,6 +28,15 @@ class Tour(TourBase):
     created_at: str
     updated_at: str
 
+    class Config:
+        orm_mode = True
+
+
+class TourResponse(Tour):
+    """Extended Tour model with additional response data"""
+    sync_status: Optional[str] = None
+    sync_message: Optional[str] = None
+    
     class Config:
         orm_mode = True
 

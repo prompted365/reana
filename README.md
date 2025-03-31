@@ -194,6 +194,28 @@ For backward compatibility with the original API:
 
 ## Prerequisites
 
+- Python 3.9+
+- Docker and Docker Compose
+- Google Cloud Platform account with the following APIs enabled:
+  - Geocoding API
+  - Routes API
+  - Route Optimization API
+- Google Cloud credentials
+- SQLite (for development) or another database (for production)
+
+## Project Structure
+
+The REanna Router codebase is organized as follows:
+
+- `app/` - Main application package with modular architecture
+  - `api/` - FastAPI routes and controllers
+  - `models/` - Pydantic models and database operations
+  - `services/` - Business logic and external integrations
+  - `utils/` - Utility functions and helpers
+- `main.py` - Application entry point that runs the FastAPI app
+- `deprec/` - Deprecated files kept for reference
+  - `mainv2.py` - Original single-file implementation (superseded by the modular architecture)
+
 - Docker and Docker Compose
 - Google Cloud Platform account with the following APIs enabled:
   - Geocoding API
@@ -290,7 +312,7 @@ For local development without Docker:
 pip install -r requirements.txt
 
 # Run the application
-python main.py
+python main.py  # Uses the modular app structure in app/
 ```
 
 ## Database Schema

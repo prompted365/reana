@@ -355,3 +355,57 @@ def optimize_tour(
     result = parse_optimization_response(api_response, shipment_to_visit_map)
     
     return result
+
+# Add the missing OptimizationService class that's imported by the routes
+class OptimizationService:
+    """
+    Service for optimizing tour routes and schedules.
+    This class acts as a wrapper around the optimization functions.
+    """
+    
+    def __init__(self, db):
+        """
+        Initialize the optimization service
+        
+        Args:
+            db: Database connection
+        """
+        self.db = db
+        
+    async def create_and_optimize_tour(self, agent_id: str, property_addresses: List[str], 
+                                      start_time: str, strategy: str = "optimal") -> Tour:
+        """
+        Create a new tour and optimize the route
+        
+        Args:
+            agent_id: ID of the agent
+            property_addresses: List of property addresses to visit
+            start_time: Start time of the tour (ISO format)
+            strategy: Optimization strategy (optimal, nearest, etc.)
+            
+        Returns:
+            Tour: Created tour with optimized schedule
+        """
+        # Create basic properties list for optimization
+        properties = []
+        for i, address in enumerate(property_addresses):
+            # Determine availability window (simple example)
+            # In a real app, this would be based on property availability data
+            # Here we're setting a 2-hour window from the tour start time
+            from datetime import datetime, timedelta
+            start_dt = datetime.fromisoformat(start_time)
+            end_dt = start_dt + timedelta(hours=2)
+            
+            properties.append({
+                "address": address,
+                "available_from": start_dt.strftime("%H:%M"),
+                "available_to": end_dt.strftime("%H:%M"),
+                "square_footage": 1500  # Default value
+            })
+        
+        # Create tour in database
+        tour = await self.db.create_tour(agent_id, start_time)
+        
+        # Optimize the tour using the standalone function
+        result = optimize_tour(tour, properties, agent_id)
+        return tour

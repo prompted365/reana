@@ -265,3 +265,22 @@ async def get_tour_journal(tour_id: str) -> List[Dict[str, Any]]:
     journal_entries.sort(key=lambda x: x["timestamp"])
     
     return journal_entries
+
+async def process_unsent_feedback() -> Dict[str, Any]:
+    """
+    Process all unsent feedback and send notifications.
+    This is a wrapper around the NotificationService method.
+    
+    Returns:
+        Dict: Processing result with status and counts
+    """
+    from app.models.database import get_db_connection
+    from app.services.notification_service import NotificationService
+    
+    # Create notification service
+    db = get_db_connection()
+    notification_service = NotificationService(db)
+    
+    # Process unsent feedback
+    result = await notification_service.process_unsent_feedback()
+    return result
